@@ -24,6 +24,7 @@ class Bank_Account
 	void withdraw(int);
 };
 
+// ...Bank account creation
 void Bank_Account::create_Bank_Account()
 {
     system("CLS");
@@ -39,14 +40,42 @@ void Bank_Account::create_Bank_Account()
     cin>>Money_Deposit;
     cout<<"\n\n\tcongratulations!!!";
     cout<<"\n\tBank Account Created.";
-    cout<<"\n\n\n\n\n\tPress 'Enter' To Continue..";
 }
 
+// ...Account details display
 void Bank_Account::display_Account() const
 {
     cout<<"\n\tBank Account No. : "<<accountNo;
     cout<<"\n\tBank Account Holder Name : "<<name;
     cout<<"\n\tType Of Bank Account : "<<type;
     cout<<"\n\tTotal Balance : "<<Money_Deposit;
-    cout<<"\n\n\n\n\n\tPress 'Enter' To Continue..";
+}
+
+// ...Update account details
+void Bank_Account::update()
+{
+    cout<<"\n\tBank Account No. : "<<accountNo;
+    cout<<"\n\n\tUpdation Bank Account Holder Name : ";
+    cin.ignore();
+    cin.getline(name, 50);
+    cout<<"\tUpdation Type Of Bank Account : ";
+    cin>>type;
+    type=toupper(type);
+    cout<<"\tUpdation Balance : ";
+    cin>>Money_Deposit;
+}
+
+int Bank_Account::ret_Acc_No() const
+{
+    return accountNo;
+}
+
+char Bank_Account::ret_Type() const
+{
+    return type;
+}
+
+void Bank_Account::report() const
+{
+    cout<<accountNo<<setw(10)<<" "<<name<<setw(10)<<" "<<type<<setw(6)<<Money_Deposit<<endl;
 }
