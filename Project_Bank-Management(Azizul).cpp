@@ -23,3 +23,21 @@ class Bank_Account
 	char ret_Type() const;
 	void withdraw(int);
 };
+
+void Bank_Account::create_Bank_Account()
+{
+    system("CLS");
+    cout<<"\n\tEnter the Bank Account No. : ";
+    cin>>accountNo;
+    cout<<"\n\n\tEnter the Bank Account Holder Name : ";
+    cin.ignore();
+    cin.getline(name, 50);
+    cout<<"\n\tEnter Type Of the Bank Account (C/S) : ";
+    cin>>type;
+    type=toupper(type);
+    cout<<"\n\tEnter The Starting Money : ";
+    cin>>Money_Deposit;
+    cout<<"\n\n\tcongratulations!!!.";
+    cout<<"\n\tBank Account Created.";
+    cout<<"\n\n\n\n\n\tPress 'Enter' To Continue..";
+}
