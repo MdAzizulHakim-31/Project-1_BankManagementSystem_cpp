@@ -37,7 +37,16 @@ void Bank_Account::create_Bank_Account()
     type=toupper(type);
     cout<<"\n\tEnter The Starting Money : ";
     cin>>Money_Deposit;
-    cout<<"\n\n\tcongratulations!!!.";
+    cout<<"\n\n\tcongratulations!!!";
     cout<<"\n\tBank Account Created.";
+    cout<<"\n\n\n\n\n\tPress 'Enter' To Continue..";
+}
+
+void Bank_Account::display_Account() const
+{
+    cout<<"\n\tBank Account No. : "<<accountNo;
+    cout<<"\n\tBank Account Holder Name : "<<name;
+    cout<<"\n\tType Of Bank Account : "<<type;
+    cout<<"\n\tTotal Balance : "<<Money_Deposit;
     cout<<"\n\n\n\n\n\tPress 'Enter' To Continue..";
 }
