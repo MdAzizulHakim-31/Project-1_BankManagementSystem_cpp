@@ -244,7 +244,7 @@ void display_details(int n)
     }
     inFile.close();
     if (flag == false)
-        cout << "\n\n\tBank_Account number does not exist";
+        cout << "\n\n\tBank Account number does not exist.";
 }
 
 // ...Display all
@@ -273,31 +273,78 @@ void display_all()
 // ...Update bank account
 void update_Bank_Account(int n)
 {
-	bool found=false;
-	Bank_Account ac;
-	fstream File;
-    File.open("Bank_Account.dat",ios::binary|ios::in|ios::out);
-	if(!File)
-	{
-		cout<<"File could not be open !! Press any Key...";
-		return;
-	}
-	while(!File.eof() && found==false)
-	{
-		File.read(reinterpret_cast<char *> (&ac), sizeof(Bank_Account));
-		if(ac.ret_Acc_No()==n)
-		{
-			ac.display_Account();
-			cout<<"\n\n\tPlease Enter The New Details of Bank_Account"<<endl;
-			ac.update();
-			int pos=(-1)*static_cast<int>(sizeof(Bank_Account));
-			File.seekp(pos,ios::cur); //fncallat1353
-		    File.write(reinterpret_cast<char *> (&ac), sizeof(Bank_Account));
-		    cout<<"\n\n\tRecord Updated";
-		    found=true;
-		  }
-	}
-	File.close();
-	if(found==false)
-		cout<<"\n\n\tRecord Not Found ";
+    bool found = false;
+    Bank_Account ac;
+    fstream File;
+    File.open("Bank_Account.dat", ios::binary | ios::in | ios::out);
+    if (!File)
+    {
+        cout << "File could not be open !! Press any Key...";
+        return;
+    }
+    while (!File.eof() && found == false)
+    {
+        File.read(reinterpret_cast<char *>(&ac), sizeof(Bank_Account));
+        if (ac.ret_Acc_No() == n)
+        {
+            ac.display_Account();
+            cout << "\n\n\tPlease Enter The New Details of Bank_Account" << endl;
+            ac.update();
+            int pos = (-1) * static_cast<int>(sizeof(Bank_Account));
+            File.seekp(pos, ios::cur); // fncallat1353
+            File.write(reinterpret_cast<char *>(&ac), sizeof(Bank_Account));
+            cout << "\n\n\tRecord Updated..";
+            found = true;
+        }
+    }
+    File.close();
+    if (found == false)
+        cout << "\n\n\tRecord Not Found..";
+}
+
+// ...Deposit & withdraw calculation
+void Money_Deposit_withdraw(int n, int option)
+{
+    int amt;
+    bool found = false;
+    Bank_Account ac;
+    fstream File;
+    File.open("Bank_Account.dat", ios::binary | ios::in | ios::out);
+    if (!File)
+    {
+        cout << "File could not be open !! Press any Key...";
+        return;
+    }
+    while (!File.eof() && found == false)
+    {
+        File.read(reinterpret_cast<char *>(&ac), sizeof(Bank_Account));
+        if (ac.ret_Acc_No() == n)
+        {
+            ac.display_Account();
+            if (option == 1)
+            {
+                cout << "\n\n\tEnter The amount you want to deposit: ";
+                cin >> amt;
+                ac.deposit(amt);
+            }
+            if (option == 2)
+            {
+                cout << "\n\n\tEnter The amount you want to withdraw: ";
+                cin >> amt;
+                int bal = ac.ret_Money_Deposit() - amt;
+                if (bal < 0)
+                    cout << "\n\tInsufficience balance";
+                else
+                    ac.withdraw(amt);
+            }
+            int pos = (-1) * static_cast<int>(sizeof(ac));
+            File.seekp(pos, ios::cur); // fn1353
+            File.write(reinterpret_cast<char *>(&ac), sizeof(Bank_Account));
+            cout << "\n\n\tRecord Updated.";
+            found = true;
+        }
+    }
+    File.close();
+    if (found == false)
+        cout << "\n\n\tRecord Not Found.";
 }
