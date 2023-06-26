@@ -93,7 +93,6 @@ int Bank_Account::ret_Money_Deposit() const
     return Money_Deposit;
 }
 
-
 // ...Main function
 void write_Bank_Account();
 void display_details(int);
@@ -111,8 +110,7 @@ int main()
         cout << "\n\n\t\t***WELCOME TO BANK MANAGEMENT SYSTEM***";
         cout << "\n\n\t\t-------------------------------\n";
         cout << "\t\t    ::MAIN MENU::";
-        cout << "\n\t\t-------------------------------";
-
+        cout << "\n\t\t-------------------------------\n";
         cout << "\n\t\t1. NEW BANK ACCOUNT";
         cout << "\n\t\t2. DEPOSIT";
         cout << "\n\t\t3. WITHDRAW";
@@ -181,4 +179,125 @@ int main()
         cin.get();
     } while (serial != '8');
     return 0;
+}
+
+// ...Write account
+void write_Bank_Account()
+{
+    Bank_Account ac;
+    ofstream outFile;
+    outFile.open("Bank_Account.dat", ios::binary | ios::app);
+    ac.create_Bank_Account();
+    outFile.write(reinterpret_cast<char *>(&ac), sizeof(Bank_Account));
+    outFile.close();
+}
+
+// ...delete account
+void delete_Bank_Account(int n)
+{
+    Bank_Account ac;
+    ifstream inFile;
+    ofstream outFile;
+    inFile.open("Bank_Account.dat", ios::binary);
+    if (!inFile)
+    {
+        cout << "File could not be open!!";
+        cout << "\n\n\n\n\n\tPress 'Enter' To Continue...";
+        return;
+    }
+    outFile.open("Temp.dat", ios::binary);
+    inFile.seekg(0, ios::beg);
+    while (inFile.read(reinterpret_cast<char *>(&ac), sizeof(Bank_Account)))
+    {
+        if (ac.ret_Acc_No() != n)
+        {
+            outFile.write(reinterpret_cast<char *>(&ac), sizeof(Bank_Account));
+        }
+    }
+    inFile.close();
+    outFile.close();
+    remove("Bank_Account.dat");
+    rename("Temp.dat", "Bank_Account.dat");
+    cout << "\n\n\tRecord Deleted..";
+}
+
+// ...Display details
+void display_details(int n)
+{
+    Bank_Account ac;
+    bool flag = false;
+    ifstream inFile;
+    inFile.open("Bank_Account.dat", ios::binary);
+    if (!inFile)
+    {
+        cout << "File could not be open !! Press any Key...";
+        return;
+    }
+    cout << "\n\tBALANCE DETAILS\n";
+    while (inFile.read(reinterpret_cast<char *>(&ac), sizeof(Bank_Account)))
+    {
+        if (ac.ret_Acc_No() == n)
+        {
+            ac.display_Account();
+            flag = true;
+        }
+    }
+    inFile.close();
+    if (flag == false)
+        cout << "\n\n\tBank_Account number does not exist";
+}
+
+// ...Display all
+void display_all()
+{
+    system("CLS");
+    Bank_Account ac;
+    ifstream inFile;
+    inFile.open("Bank_Account.dat", ios::binary);
+    if (!inFile)
+    {
+        cout << "File could not be open !! Press any Key...";
+        return;
+    }
+    cout << "\n\n\t\tBank_Account HOLDER LIST\n\n";
+    cout << "----------------------------------------------------------------\n";
+    cout << "\tA/C NO.     NAME            TYPE      BALANCE";
+    cout << "\n-----------------------------------------------------------------\n";
+    while (inFile.read(reinterpret_cast<char *>(&ac), sizeof(Bank_Account)))
+    {
+        ac.report();
+    }
+    inFile.close();
+}
+
+// ...Update bank account
+void update_Bank_Account(int n)
+{
+	bool found=false;
+	Bank_Account ac;
+	fstream File;
+    File.open("Bank_Account.dat",ios::binary|ios::in|ios::out);
+	if(!File)
+	{
+		cout<<"File could not be open !! Press any Key...";
+		return;
+	}
+	while(!File.eof() && found==false)
+	{
+		File.read(reinterpret_cast<char *> (&ac), sizeof(Bank_Account));
+		if(ac.ret_Acc_No()==n)
+		{
+			ac.display_Account();
+			cout<<"\n\n\tPlease Enter The New Details of Bank_Account"<<endl;
+			ac.update();
+			int pos=(-1)*static_cast<int>(sizeof(Bank_Account));
+			File.seekp(pos,ios::cur); //fncallat1353
+		    File.write(reinterpret_cast<char *> (&ac), sizeof(Bank_Account));
+		    cout<<"\n\n\tRecord Updated";
+		    found=true;
+		  }
+	}
+	File.close();
+	if(found==false)
+		cout<<"\n\n\tRecord Not Found ";
 }
