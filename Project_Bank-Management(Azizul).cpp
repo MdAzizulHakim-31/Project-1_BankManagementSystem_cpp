@@ -38,7 +38,7 @@ void Bank_Account::create_Bank_Account()
     type = toupper(type);
     cout << "\n\tEnter The Starting Money : ";
     cin >> Money_Deposit;
-    cout << "\n\n\tCongratulations!!!";
+    cout << "\n\n\tCongratulations "<<name<<"..!!!";
     cout << "\n\n\tBank Account Created.";
 }
 
@@ -51,17 +51,17 @@ void Bank_Account::display_Account() const
     cout << "\n\tTotal Balance : " << Money_Deposit;
 }
 
-// ...Updation
+// ...Update
 void Bank_Account::update()
 {
-    cout << "\n\tBank Account No. : " << accountNo;
-    cout << "\n\n\tUpdation Bank Account Holder Name : ";
+    cout << "\n\tBank Account No. : " << accountNo<<"(non changeable)";
+    cout << "\n\n\tUpdate Bank Account Holder Name : ";
     cin.ignore();
     cin.getline(name, 50);
-    cout << "\tUpdation Type of Bank Account : ";
+    cout << "\tUpdate Type of Bank Account : ";
     cin >> type;
     type = toupper(type);
-    cout << "\tUpdation Balance : ";
+    cout << "\tUpdate Balance : ";
     cin >> Money_Deposit;
 }
 
@@ -91,7 +91,7 @@ int Bank_Account::ret_Money_Deposit() const
     return Money_Deposit;
 }
 
-// ...Main section
+// ...Main function
 void write_Bank_Account();
 void display_details(int);
 void display_all();
@@ -113,7 +113,7 @@ int main()
         cout << "\n\t\t1. NEW BANK ACCOUNT";
         cout << "\n\t\t2. DEPOSIT";
         cout << "\n\t\t3. WITHDRAW";
-        cout << "\n\t\t4. BALANCE ENQUIRY";
+        cout << "\n\t\t4. ACCOUNT ENQUIRY";
         cout << "\n\t\t5. ALL BANK ACCOUNT HOLDER LIST";
         cout << "\n\t\t6. CLOSE A BANK ACCOUNT";
         cout << "\n\t\t7. UPDATE A BANK ACCOUNT";
@@ -176,7 +176,7 @@ int main()
         }
         cin.ignore();
         cin.get();
-    } 
+    }
     while (serial != '8');
     return 0;
 }
@@ -233,7 +233,7 @@ void display_details(int n)
         cout << "File could not be open !! Press any Key...";
         return;
     }
-    cout << "\n\tBALANCE DETAILS\n";
+    cout << "\n\tACCOUNT DETAILS:\n";
     while (inFile.read(reinterpret_cast<char *>(&ac), sizeof(Bank_Account)))
     {
         if (ac.ret_Acc_No() == n)
@@ -247,7 +247,7 @@ void display_details(int n)
         cout << "\n\n\tBank Account number does not exist.";
 }
 
-// ...Display details
+// ...Display all details
 void display_all()
 {
     system("CLS");
@@ -259,9 +259,9 @@ void display_all()
         cout << "File could not be open !! Press any Key...";
         return;
     }
-    cout << "\n\n\t\tBank_Account HOLDER LIST\n\n";
+    cout << "\n\n\t\tBANK ACCOUNT HOLDER LIST\n\n";
     cout << "----------------------------------------------------------------\n";
-    cout << "\tA/C NO.     NAME            TYPE      BALANCE";
+    cout << "\tA/C NO.     NAME            TYPE     BALANCE";
     cout << "\n-----------------------------------------------------------------\n";
     while (inFile.read(reinterpret_cast<char *>(&ac), sizeof(Bank_Account)))
     {
@@ -288,12 +288,13 @@ void update_Bank_Account(int n)
         if (ac.ret_Acc_No() == n)
         {
             ac.display_Account();
-            cout << "\n\n\tPlease Enter The New Details of Bank_Account" << endl;
+            cout<<"\n\t----------------------------------------";
+			cout<<"\n\n\tEnter the details you want to update";
             ac.update();
             int pos = (-1) * static_cast<int>(sizeof(Bank_Account));
             File.seekp(pos, ios::cur);
             File.write(reinterpret_cast<char *>(&ac), sizeof(Bank_Account));
-            cout << "\n\n\tRecord Updated";
+            cout << "\n\n\tRecord Updated.";
             found = true;
         }
     }
@@ -333,7 +334,7 @@ void Money_Deposit_withdraw(int n, int option)
                 cin >> amt;
                 int bal = ac.ret_Money_Deposit() - amt;
                 if (bal < 0)
-                    cout << "\n\tInsufficient balance";
+                    cout << "\n\tInsufficient balance.";
                 else
                     ac.withdraw(amt);
             }
