@@ -221,7 +221,7 @@ void delete_Bank_Account(int n)
     cout << "\n\n\tRecord Deleted ..";
 }
 
-// ...Display details
+// ...Display account details
 void display_details(int n)
 {
     Bank_Account ac;
